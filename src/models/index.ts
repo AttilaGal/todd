@@ -18,3 +18,8 @@ export interface ToddPromptSimple {
   callback: ToddCallback,
   footer?: string
 }
+
+export enum ToddType {
+  Options,
+  Response
+}

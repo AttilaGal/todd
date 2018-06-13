@@ -44,6 +44,7 @@ describe('riddler', () => {
     afterEach(() => {
       messages = [];
     });
+
     it('should log the question first', () => {
       ask();
       expect(messages[0]).toBe('Welcome to Alien Artifacts! What would you like to do?');
@@ -57,7 +58,7 @@ describe('riddler', () => {
 
     it('should prompt the default footer if no footer is provided', () => {
       ask();
-      expect(receivedFooter).toBe('Choose one of the options and hit Enter');
+      expect(receivedFooter).toBe('Choose one of the options and hit Enter\n');
     });
 
     it('should prompt the custom footer if one is provided', () => {

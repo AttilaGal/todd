@@ -1,27 +1,36 @@
 import {
   ToddPrompt,
   ToddPromptSimple,
+  ToddType,
 } from './models';
-import { createInterface, ReadLine } from 'readline';
+import { createInterface, ReadLine, ReadLineOptions } from 'readline';
 
 export function ask(prompt: ToddPrompt): void {
   console.log(prompt.question);
   printPrompts(prompt);
-  const rl = getReadInterface();
-  const footer = prompt.footer || 'Choose one of the options and hit Enter';
-  const answerHandler = getAnswerHandler(rl, prompt);
-  rl.question(footer, answerHandler);
+  todd(ToddType.Options, prompt);
 }
 
 export function askResponse(prompt: ToddPromptSimple): void {
   console.log(prompt.question);
+  todd(ToddType.Response, prompt);
+}
+
+function todd(type: ToddType, prompt: ToddPrompt | ToddPromptSimple) {
   const rl = getReadInterface();
   const footer = prompt.footer || 'Choose one of the options and hit Enter' + '\n';
-  const answerHandler = getResponseHandler(rl, prompt);
+  const answerHandler = getAnswerHandler(type, rl, prompt);
   rl.question(footer, answerHandler);
 }
 
-const getAnswerHandler = (rl: ReadLine, prompt: ToddPrompt) => (answer: string) => {
+const getAnswerHandler = (type: ToddType, rl: ReadLine, prompt: ToddPrompt | ToddPromptSimple) => {
+  if (type === ToddType.Response) {
+    return getAnswerHandlerForResponse(rl, <ToddPromptSimple> prompt);
+  }
+  return getAnswerHandlerForOptions(rl, <ToddPrompt> prompt);
+}
+
+const getAnswerHandlerForOptions = (rl: ReadLine, prompt: ToddPrompt) => (answer: string) => {
   rl.close();
   const chosenPrompt = prompt.options.find(p => p.index.toString() === answer);
   if (!chosenPrompt) {
@@ -31,17 +40,15 @@ const getAnswerHandler = (rl: ReadLine, prompt: ToddPrompt) => (answer: string) 
   return chosenPrompt.cb(null, answer)
 };
 
-const getResponseHandler = (rl: ReadLine, prompt: ToddPromptSimple) => (answer: string) => {
+const getAnswerHandlerForResponse = (rl: ReadLine, prompt: ToddPromptSimple) => (answer: string) => {
   rl.close();
   return prompt.callback(null, answer)
 };
 
-function getReadInterface() {
-  return createInterface({
-    input: process.stdin,
-    output: process.stdout
-  })
-}
+const getReadInterface = () => createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 function printPrompts(prompts: ToddPrompt): void {
   prompts.options
