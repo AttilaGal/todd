@@ -37,7 +37,7 @@ const getAnswerHandlerForOptions = (rl: ReadLine, prompt: ToddPrompt) => (answer
     console.log("I didn't quite get that.\n");
     return ask(prompt);
   }
-  return chosenPrompt.cb(null, answer)
+  return chosenPrompt.callback(null, answer)
 };
 
 const getAnswerHandlerForResponse = (rl: ReadLine, prompt: ToddPromptSimple) => (answer: string) => {

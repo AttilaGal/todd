@@ -15,14 +15,14 @@ describe('riddler', () => {
           {
             index: 1,
             text: 'start new game',
-            cb: () => {
+            callback: () => {
               calledTrigger = 'start new game'
             }
           },
           {
             index: 2,
             text: 'quit',
-            cb: () => {
+            callback: () => {
               calledTrigger = 'quit'
             },
           }
