@@ -19,7 +19,6 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "coverage:open": "open ./coverage/lcov-report/index.html",
-    "watch": "nodemon",
     "build": "tsc",
     "prepublishOnly": "npm run test && npm run build"
   },
@@ -27,7 +26,6 @@
     "@types/jest": "^22.2.3",
     "@types/node": "^10.3.0",
     "jest": "^23.1.0",
-    "nodemon": "^1.17.5",
     "ts-jest": "^22.4.6",
     "ts-node": "^6.0.5",
     "typescript": "^2.9.1"
