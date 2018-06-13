@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A minimalistic package to ask questions through the command line.",
   "author": "Attila Gal",
+  "license": "MIT",
   "keywords": [
     "cli",
     "console",
