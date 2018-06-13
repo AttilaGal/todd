@@ -1,4 +1,9 @@
-import { getMessage } from './utils';
+import {
+  ask,
+  askResponse
+} from './todd';
 
-console.log(getMessage());
-
+export default {
+  ask,
+  askResponse
+}

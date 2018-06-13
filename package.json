@@ -4,14 +4,16 @@
   "description": "A minimalistic package to ask questions through the command line.",
   "author": "Attila Gal",
   "keywords": [
-    "cli", "console", "interface", "questions"
+    "cli",
+    "console",
+    "interface",
+    "questions"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/AttilaGal/todd.git"
   },
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "start": "npm run build && ts-node ./src/index.ts",
     "test": "jest",
@@ -44,7 +46,8 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.ts",
-      "!**/*.d.ts"
+      "!**/*.d.ts",
+      "!src/index.ts"
     ]
   }
 }
