@@ -2,6 +2,9 @@
 
 A minimalistic helper library for making cli apps.
 
+![alt text](https://github.com/AttilaGal/todd/raw/master/src/todd.jpg "Todd picture")
+
+
 Todd has been named after the Breaking Bad character. Todd is a simple guy (or library in this case), he just asks some questions and gets things done.
 
 ---
