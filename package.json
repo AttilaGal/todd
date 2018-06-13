@@ -1,0 +1,50 @@
+{
+  "name": "todd",
+  "version": "0.0.1",
+  "description": "A minimalistic package to ask questions through the command line.",
+  "author": "Attila Gal",
+  "keywords": [
+    "cli", "console", "interface", "questions"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AttilaGal/todd.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "npm run build && ts-node ./src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "coverage:open": "open ./coverage/lcov-report/index.html",
+    "watch": "nodemon",
+    "build": "tsc",
+    "prepublishOnly": "npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/node": "^10.3.0",
+    "jest": "^23.1.0",
+    "nodemon": "^1.17.5",
+    "ts-jest": "^22.4.6",
+    "ts-node": "^6.0.5",
+    "typescript": "^2.9.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json",
+      "node"
+    ],
+    "transform": {
+      "\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/__tests__/.*\\.test\\.(ts|js)$",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!**/*.d.ts"
+    ]
+  }
+}
