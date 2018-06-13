@@ -3,7 +3,7 @@ export interface ToddCallback {
 }
 export interface ToddOption {
     text: string;
-    cb: ToddCallback;
+    callback: ToddCallback;
     index: number;
 }
 export interface ToddPrompt {
@@ -15,4 +15,8 @@ export interface ToddPromptSimple {
     question: string;
     callback: ToddCallback;
     footer?: string;
+}
+export declare enum ToddType {
+    Options = 0,
+    Response = 1
 }

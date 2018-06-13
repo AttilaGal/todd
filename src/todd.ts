@@ -16,9 +16,14 @@ export function askResponse(prompt: ToddPromptSimple): void {
   todd(ToddType.Response, prompt);
 }
 
+const defaultFooters = {
+  [ToddType.Options]: 'Choose one of the options and hit Enter',
+  [ToddType.Response]: 'Type in your answer and hit Enter'
+}
+
 function todd(type: ToddType, prompt: ToddPrompt | ToddPromptSimple) {
   const rl = getReadInterface();
-  const footer = prompt.footer || 'Choose one of the options and hit Enter' + '\n';
+  const footer = prompt.footer || defaultFooters[type] + '\n';
   const answerHandler = getAnswerHandler(type, rl, prompt);
   rl.question(footer, answerHandler);
 }
