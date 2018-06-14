@@ -21,7 +21,7 @@ npm i --save todd
 ```javascript
 import { ask } from 'todd';
 
-todd.ask({
+ask({
   question: 'Do you really want us coming back mrs. White?',
   options: [
     {
