@@ -4,7 +4,7 @@ export interface ToddCallback {
 
 export interface ToddOption {
   text: string,
-  callback: ToddCallback, //how to define func callback
+  callback?: ToddCallback, //how to define func callback
   index: number
 }
 export interface ToddPrompt {
