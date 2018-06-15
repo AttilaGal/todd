@@ -83,6 +83,6 @@ askResponse({
 will generate the following output:
 ```
 Who is the one that knocks?
-Type in your answer and hit Enter
+Answer Me!
 
 ```
