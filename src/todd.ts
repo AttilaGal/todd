@@ -18,20 +18,19 @@ function askInternal(prompt: ToddPrompt, promiseHandlers: PromiseHandlers): Prom
     return !!promiseHandlers
       ? todd(ToddType.Options, prompt, promiseHandlers)
       : new Promise((resolve, reject) => {
-        todd(ToddType.Options, prompt, { resolve, reject });
-      });
+          todd(ToddType.Options, prompt, { resolve, reject });
+        });
   }
   return todd(ToddType.Options, prompt);
 }
 
 export function askResponse(prompt: ToddPromptSimple): Promise<string> | void {
   console.log(prompt.question);
-  if (!!prompt.callback) {
-    return new Promise((resolve, reject) => {
-      todd(ToddType.Response, prompt, { resolve, reject });    
-    });
-  }
-  return todd(ToddType.Response, prompt);
+  return prompt.callback
+    ? todd(ToddType.Response, prompt)
+    : new Promise((resolve, reject) => {
+        todd(ToddType.Response, prompt, { resolve, reject });    
+      });
 }
 
 const defaultFooters = {
@@ -91,5 +90,5 @@ const getReadInterface = () => createInterface({
 function printPrompts(prompts: ToddPrompt): void {
   prompts.options
     .sort((a, b) => a.index - b.index)
-    .forEach(p => console.log(`${p.index}) ${p.text}`))
+    .forEach(p => console.log(`${p.index}) ${p.text}`));
 }

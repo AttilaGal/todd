@@ -32,13 +32,13 @@ describe('todd#askResponse', () => {
       expect(messages[0]).toBe('What\'s your favourite colour?');
     });
 
-    fit('should return the response when user response was received', () => {
+    it('should return the response when user response was received', () => {
       askWithCallback();
       triggerCallback('my answer');
       expect(messages[1]).toBe('my answer');
     });
 
-    fit('should return the response as the promise result when user response was received', (done) => {
+    it('should return the response as the promise result when user response was received', (done) => {
       const question = <Promise<string>> askResponse({
         question: 'What\'s your favorite color?'
       });
