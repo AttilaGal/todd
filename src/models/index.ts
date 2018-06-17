@@ -1,3 +1,8 @@
+export interface PromiseHandlers {
+  resolve: (x: any) => any,
+  reject: (x: any) => any
+}
+
 export interface ToddCallback {
   (error: Error, value?: any): void
 }

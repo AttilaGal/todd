@@ -1,7 +1,7 @@
 import * as todd from '../todd';
 import * as mockReadline from 'readline';
 
-describe('riddler', () => {
+describe('todd', () => {
   describe('ask with callback', () => {
     let messages = [];
     let triggerCallback;
@@ -115,7 +115,7 @@ describe('riddler', () => {
       messages = [];
     });
 
-    function ask(footer?: string): Promise<string> {
+    function ask(footer?: string): Promise<string>  | void {
       return todd.ask({
         question: 'Welcome to Alien Artifacts! What would you like to do?',
         options: [
@@ -157,34 +157,39 @@ describe('riddler', () => {
 
     describe('promise logic', () => {
       it('should return the first option in the promise resolve', (done) => {
-        ask()
+        const question = <Promise<string>> ask();
+        question
           .then(res => {
-            expect(res).toBe('start new game')
+            expect(res).toBe('1')
             done();
           });
-        triggerCallback("1");
+        triggerCallback('1');
       });
   
       it('should return the second option in the promise resolve', (done) => {
-        ask()
+        const question = <Promise<string>> ask();
+        question
           .then(res => {
-            expect(res).toBe('quit')
+            expect(res).toBe('2')
             done();
           });
-        triggerCallback("2");
+        triggerCallback('2');
       });
   
       it('should say it doesn\'t understand the question and prompt again', (done) => {
-        ask()
-          .then(() => {
+        const question = <Promise<string>> ask();
+        question.then(() => {
             expect(messages[3]).toBe('I didn\'t quite get that.\n');
             expect(messages[4]).toBe('Welcome to Alien Artifacts! What would you like to do?');
             expect(messages[5]).toBe('1) start new game');
             expect(messages[6]).toBe('2) quit');
+            expect(receivedFooter).toBe('Choose one of the options and hit Enter\n');
             done();
           });
         triggerCallback("3");
+        triggerCallback("2");
       });
+
     });
   });
 });
