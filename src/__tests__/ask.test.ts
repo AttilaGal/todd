@@ -94,7 +94,7 @@ describe('riddler', () => {
   });
 
 
-  escribe('ask with promise', () => {
+  describe('ask with promise', () => {
     let messages = [];
     let triggerCallback;
     let receivedFooter;
@@ -115,7 +115,7 @@ describe('riddler', () => {
       messages = [];
     });
 
-    function ask(footer?: string): void {
+    function ask(footer?: string): Promise<string> {
       return todd.ask({
         question: 'Welcome to Alien Artifacts! What would you like to do?',
         options: [
@@ -155,26 +155,35 @@ describe('riddler', () => {
       });
     });
 
-    describe('callback logic', () => {
-      it('should trigger the first callback', () => {
-        ask();
+    describe('promise logic', () => {
+      it('should return the first option in the promise resolve', (done) => {
+        ask()
+          .then(res => {
+            expect(res).toBe('start new game')
+            done();
+          });
         triggerCallback("1");
-        expect(calledTrigger).toBe('start new game');
       });
   
-      it('should trigger the second callback', () => {
-        ask();
+      it('should return the second option in the promise resolve', (done) => {
+        ask()
+          .then(res => {
+            expect(res).toBe('quit')
+            done();
+          });
         triggerCallback("2");
-        expect(calledTrigger).toBe('quit');
       });
   
-      it('should say it doesn\'t understand the question and prompt again', () => {
-        ask();
+      it('should say it doesn\'t understand the question and prompt again', (done) => {
+        ask()
+          .then(() => {
+            expect(messages[3]).toBe('I didn\'t quite get that.\n');
+            expect(messages[4]).toBe('Welcome to Alien Artifacts! What would you like to do?');
+            expect(messages[5]).toBe('1) start new game');
+            expect(messages[6]).toBe('2) quit');
+            done();
+          });
         triggerCallback("3");
-        expect(messages[3]).toBe('I didn\'t quite get that.\n');
-        expect(messages[4]).toBe('Welcome to Alien Artifacts! What would you like to do?');
-        expect(messages[5]).toBe('1) start new game');
-        expect(messages[6]).toBe('2) quit');
       });
     });
   });
