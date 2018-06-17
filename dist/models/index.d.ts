@@ -1,9 +1,13 @@
+export interface PromiseHandlers {
+    resolve: (x: any) => any;
+    reject: (x: any) => any;
+}
 export interface ToddCallback {
     (error: Error, value?: any): void;
 }
 export interface ToddOption {
     text: string;
-    callback: ToddCallback;
+    callback?: ToddCallback;
     index: number;
 }
 export interface ToddPrompt {
@@ -13,7 +17,7 @@ export interface ToddPrompt {
 }
 export interface ToddPromptSimple {
     question: string;
-    callback: ToddCallback;
+    callback?: ToddCallback;
     footer?: string;
 }
 export declare enum ToddType {

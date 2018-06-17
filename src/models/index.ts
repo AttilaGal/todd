@@ -20,7 +20,7 @@ export interface ToddPrompt {
 
 export interface ToddPromptSimple {
   question: string,
-  callback: ToddCallback,
+  callback?: ToddCallback,
   footer?: string
 }
 

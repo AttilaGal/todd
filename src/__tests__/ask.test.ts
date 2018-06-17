@@ -1,8 +1,8 @@
-import * as todd from '../todd';
+import { ask } from '../todd';
 import * as mockReadline from 'readline';
 
 describe('todd', () => {
-  describe('ask with callback', () => {
+  describe('triggerAsk with callback', () => {
     let messages = [];
     let triggerCallback;
     let receivedFooter;
@@ -21,10 +21,11 @@ describe('todd', () => {
 
     afterEach(() => {
       messages = [];
+      jest.unmock('readline');
     });
 
-    function ask(footer?: string): void {
-      todd.ask({
+    function triggerAsk(footer?: string): void {
+      ask({
         question: 'Welcome to Alien Artifacts! What would you like to do?',
         options: [
           {
@@ -48,42 +49,42 @@ describe('todd', () => {
 
     describe('general logic', () => {
       it('should log the question first', () => {
-        ask();
+        triggerAsk();
         expect(messages[0]).toBe('Welcome to Alien Artifacts! What would you like to do?');
       });
   
       it('should log the options in the correct sequence', () => {
-        ask();
+        triggerAsk();
         expect(messages[1]).toBe('1) start new game');
         expect(messages[2]).toBe('2) quit');
       }); 
   
       it('should prompt the default footer if no footer is provided', () => {
-        ask();
+        triggerAsk();
         expect(receivedFooter).toBe('Choose one of the options and hit Enter\n');
       });
   
       it('should prompt the custom footer if one is provided', () => {
-        ask('this is a custom footer');
+        triggerAsk('this is a custom footer');
         expect(receivedFooter).toBe('this is a custom footer');
       });
     });
 
     describe('callback logic', () => {
       it('should trigger the first callback', () => {
-        ask();
+        triggerAsk();
         triggerCallback("1");
         expect(calledTrigger).toBe('start new game');
       });
   
       it('should trigger the second callback', () => {
-        ask();
+        triggerAsk();
         triggerCallback("2");
         expect(calledTrigger).toBe('quit');
       });
   
       it('should say it doesn\'t understand the question and prompt again', () => {
-        ask();
+        triggerAsk();
         triggerCallback("3");
         expect(messages[3]).toBe('I didn\'t quite get that.\n');
         expect(messages[4]).toBe('Welcome to Alien Artifacts! What would you like to do?');
@@ -94,7 +95,7 @@ describe('todd', () => {
   });
 
 
-  describe('ask with promise', () => {
+  describe('triggerAsk with promise', () => {
     let messages = [];
     let triggerCallback;
     let receivedFooter;
@@ -115,8 +116,8 @@ describe('todd', () => {
       messages = [];
     });
 
-    function ask(footer?: string): Promise<string>  | void {
-      return todd.ask({
+    function triggerAsk(footer?: string): Promise<string>  | void {
+      return ask({
         question: 'Welcome to Alien Artifacts! What would you like to do?',
         options: [
           {
@@ -134,30 +135,30 @@ describe('todd', () => {
 
     describe('general logic', () => {
       it('should log the question first', () => {
-        ask();
+        triggerAsk();
         expect(messages[0]).toBe('Welcome to Alien Artifacts! What would you like to do?');
       });
   
       it('should log the options in the correct sequence', () => {
-        ask();
+        triggerAsk();
         expect(messages[1]).toBe('1) start new game');
         expect(messages[2]).toBe('2) quit');
       }); 
   
       it('should prompt the default footer if no footer is provided', () => {
-        ask();
+        triggerAsk();
         expect(receivedFooter).toBe('Choose one of the options and hit Enter\n');
       });
   
       it('should prompt the custom footer if one is provided', () => {
-        ask('this is a custom footer');
+        triggerAsk('this is a custom footer');
         expect(receivedFooter).toBe('this is a custom footer');
       });
     });
 
     describe('promise logic', () => {
       it('should return the first option in the promise resolve', (done) => {
-        const question = <Promise<string>> ask();
+        const question = <Promise<string>> triggerAsk();
         question
           .then(res => {
             expect(res).toBe('1')
@@ -167,7 +168,7 @@ describe('todd', () => {
       });
   
       it('should return the second option in the promise resolve', (done) => {
-        const question = <Promise<string>> ask();
+        const question = <Promise<string>> triggerAsk();
         question
           .then(res => {
             expect(res).toBe('2')
@@ -177,7 +178,7 @@ describe('todd', () => {
       });
   
       it('should say it doesn\'t understand the question and prompt again', (done) => {
-        const question = <Promise<string>> ask();
+        const question = <Promise<string>> triggerAsk();
         question.then(() => {
             expect(messages[3]).toBe('I didn\'t quite get that.\n');
             expect(messages[4]).toBe('Welcome to Alien Artifacts! What would you like to do?');
