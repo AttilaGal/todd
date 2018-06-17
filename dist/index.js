@@ -9,10 +9,4 @@ exports.default = {
     ask: todd_1.ask,
     askResponse: todd_1.askResponse
 };
-const question = todd_1.askResponse({
-    question: 'What\'s your favorite color?'
-});
-question.then(res => {
-    console.log('your answer is: ' + res);
-});
 //# sourceMappingURL=index.js.map

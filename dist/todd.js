@@ -21,12 +21,11 @@ function askInternal(prompt, promiseHandlers) {
 }
 function askResponse(prompt) {
     console.log(prompt.question);
-    if (!!prompt.callback) {
-        return new Promise((resolve, reject) => {
+    return prompt.callback
+        ? todd(models_1.ToddType.Response, prompt)
+        : new Promise((resolve, reject) => {
             todd(models_1.ToddType.Response, prompt, { resolve, reject });
         });
-    }
-    return todd(models_1.ToddType.Response, prompt);
 }
 exports.askResponse = askResponse;
 const defaultFooters = {

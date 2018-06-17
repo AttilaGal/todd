@@ -17,7 +17,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "npm run build && ts-node ./src/index.ts",
-    "test": "jest a",
+    "test": "jest",
     "test:watch": "jest --watch",
     "coverage:open": "open ./coverage/lcov-report/index.html",
     "build": "tsc",
