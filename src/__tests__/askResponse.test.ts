@@ -1,7 +1,7 @@
 import * as todd from '../todd';
 import * as mockReadline from 'readline';
 
-describe('riddler', () => {
+describe('todd', () => {
   describe('riddler#askResponse()', () => {
     let messages = [];
     let receivedFooter;
