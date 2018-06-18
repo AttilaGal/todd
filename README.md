@@ -13,7 +13,7 @@ Todd has been named after the Breaking Bad character. Todd is a simple guy (or l
 ```
 npm i --save todd
 ```
-There are 2 ways you can use todd, either with [callbacks](#Usage-with-callbacks) or with [promises](#Usage-with-promises).
+There are 2 ways you can use todd, either with [callbacks](#usage-with-callbacks) or with [promises](#usage-with-promises).
 
 ## Usage with callbacks
 Callbacks are ideal, if you don't want to perform extra checks for the response given. The callback will be called directly if the matching option was typed in the console.
