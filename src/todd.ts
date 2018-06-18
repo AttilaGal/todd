@@ -1,19 +1,36 @@
 import {
+  PromiseHandlers,
   ToddPrompt,
   ToddPromptSimple,
   ToddType,
 } from './models';
-import { createInterface, ReadLine, ReadLineOptions } from 'readline';
+import { createInterface, ReadLine } from 'readline';
 
-export function ask(prompt: ToddPrompt): void {
-  console.log(prompt.question);
-  printPrompts(prompt);
-  todd(ToddType.Options, prompt);
+export function ask(prompt: ToddPrompt): Promise<string> | void {
+  return askInternal(prompt, null);
 }
 
-export function askResponse(prompt: ToddPromptSimple): void {
+function askInternal(prompt: ToddPrompt, promiseHandlers: PromiseHandlers): Promise<string> | void {
   console.log(prompt.question);
-  todd(ToddType.Response, prompt);
+  printPrompts(prompt);
+  const containsCallback = prompt.options.find(o => !!o.callback);
+  if (!containsCallback) {
+    return !!promiseHandlers
+      ? todd(ToddType.Options, prompt, promiseHandlers)
+      : new Promise((resolve, reject) => {
+          todd(ToddType.Options, prompt, { resolve, reject });
+        });
+  }
+  return todd(ToddType.Options, prompt);
+}
+
+export function askResponse(prompt: ToddPromptSimple): Promise<string> | void {
+  console.log(prompt.question);
+  return prompt.callback
+    ? todd(ToddType.Response, prompt)
+    : new Promise((resolve, reject) => {
+        todd(ToddType.Response, prompt, { resolve, reject });    
+      });
 }
 
 const defaultFooters = {
@@ -21,33 +38,48 @@ const defaultFooters = {
   [ToddType.Response]: 'Type in your answer and hit Enter'
 }
 
-function todd(type: ToddType, prompt: ToddPrompt | ToddPromptSimple) {
+function todd(
+  type: ToddType, 
+  prompt: ToddPrompt | ToddPromptSimple, 
+  promiseHandlers?: PromiseHandlers
+): Promise<string> | void {
   const rl = getReadInterface();
   const footer = prompt.footer || defaultFooters[type] + '\n';
-  const answerHandler = getAnswerHandler(type, rl, prompt);
+  const answerHandler = getAnswerHandler(type, rl, prompt, promiseHandlers);
   rl.question(footer, answerHandler);
 }
 
-const getAnswerHandler = (type: ToddType, rl: ReadLine, prompt: ToddPrompt | ToddPromptSimple) => {
+const getAnswerHandler = (
+  type: ToddType,
+  rl: ReadLine,
+  prompt: ToddPrompt | ToddPromptSimple,
+  promiseHandlers?: PromiseHandlers
+) => {
   if (type === ToddType.Response) {
-    return getAnswerHandlerForResponse(rl, <ToddPromptSimple> prompt);
+    return getAnswerHandlerForResponse(rl, <ToddPromptSimple>prompt, promiseHandlers);
   }
-  return getAnswerHandlerForOptions(rl, <ToddPrompt> prompt);
+  return getAnswerHandlerForOptions(rl, <ToddPrompt>prompt, promiseHandlers);
 }
 
-const getAnswerHandlerForOptions = (rl: ReadLine, prompt: ToddPrompt) => (answer: string) => {
+const getAnswerHandlerForOptions = (rl: ReadLine, prompt: ToddPrompt, promiseHandlers?: PromiseHandlers) => (answer: string) => {
   rl.close();
   const chosenPrompt = prompt.options.find(p => p.index.toString() === answer);
   if (!chosenPrompt) {
     console.log("I didn't quite get that.\n");
-    return ask(prompt);
+    return askInternal(prompt, promiseHandlers);
+  }
+  if (promiseHandlers) {
+    return promiseHandlers.resolve(answer);
   }
   return chosenPrompt.callback(null, answer)
 };
 
-const getAnswerHandlerForResponse = (rl: ReadLine, prompt: ToddPromptSimple) => (answer: string) => {
+const getAnswerHandlerForResponse = (rl: ReadLine, prompt: ToddPromptSimple, promiseHandlers?: PromiseHandlers) => (answer: string) => {
   rl.close();
-  return prompt.callback(null, answer)
+  if (promiseHandlers) {
+    return promiseHandlers.resolve(answer);
+  }
+  return prompt.callback(null, answer);
 };
 
 const getReadInterface = () => createInterface({
@@ -58,5 +90,5 @@ const getReadInterface = () => createInterface({
 function printPrompts(prompts: ToddPrompt): void {
   prompts.options
     .sort((a, b) => a.index - b.index)
-    .forEach(p => console.log(`${p.index}) ${p.text}`))
+    .forEach(p => console.log(`${p.index}) ${p.text}`));
 }
