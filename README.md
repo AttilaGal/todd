@@ -89,6 +89,7 @@ Answer Me!
 
 ## Usage with promises
 Promises can help cut down on code, and also allows you to use async/await.
+
 **When no callbacks are supplied, todd presumes you'll want a promise instead.**
 ### ask something with fixed answers (options)
 ```javascript
