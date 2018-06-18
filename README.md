@@ -7,7 +7,7 @@ A minimalistic helper library for making cli apps.
 
 Todd has been named after the Breaking Bad character. Todd is a simple guy (or library in this case), he just asks some questions and gets things done.
 
----
+
 
 ## Installation
 ```
